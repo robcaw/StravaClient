@@ -15,10 +15,11 @@ try {
     $client = new StravaClient($browser);
     $client->signIn($email, $password);
   	$map =  $client->getMap($ride_id);
+  	$details = $client->getRideDetails($ride_id);
 } catch (RuntimeException $exception) {
     print sprintf("Error: %s\n", $exception->getMessage());
 }
-echo $map;
+//echo $map;
 
 
 ?>
@@ -48,6 +49,11 @@ echo $map;
   </head>
   <!-- Disable maps for now <body onload="initialize()">-->
   <body>
-    <div id="map_canvas" style="width:100%; height:100%"></div>
+    <!--<div id="map_canvas" style="width:100%; height:100%"></div>-->
+
+    <? 
+    print_r($details);
+    echo '<br><br>' . $map;
+    ?>
   </body>
 </html>

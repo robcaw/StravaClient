@@ -77,22 +77,33 @@ class StravaClient
 
         return json_decode($response->getContent(), true);
     }
-    public function getMap($ride_id){
-
-        //It's a shame you have to be logged in for this.
-        
-        if (!$this->isSignedIn()) {
-            throw new \RuntimeException('Not signed in');
-        }
+    public function get($url){
         $request = new FormRequest(FormRequest::METHOD_GET);
-        $url = new Url("http://www.strava.com/api/v2/rides/$ride_id/map_details?token=".$this->token);
+        $url = new Url($url);
         $url->applyToRequest($request);
 
         $response = new Response();
 
         $this->browser->getClient()->send($request, $response);
+        return $response;
+    }
+    public function getMap($ride_id){
+
+        //It's a shame you have to be logged in for this.
+        if (!$this->isSignedIn()) {
+            throw new \RuntimeException('Not signed in');
+        }
+        
+        $response = $this->get("http://www.strava.com/api/v2/rides/$ride_id/map_details?token=".$this->token);
 
         //returns json as string.
         return $response->getContent();
     }
+    public function getRideDetails($ride_id){
+
+        //doesn't require auth, could be handy for century challenge
+        $response = $this->get("http://www.strava.com/api/v2/rides/$ride_id");
+        return json_decode($response->getContent(), true);
+    }
+    
 }
