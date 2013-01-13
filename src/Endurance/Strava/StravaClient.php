@@ -78,6 +78,9 @@ class StravaClient
         return json_decode($response->getContent(), true);
     }
     public function getMap($ride_id){
+
+        //It's a shame you have to be logged in for this.
+        
         if (!$this->isSignedIn()) {
             throw new \RuntimeException('Not signed in');
         }
